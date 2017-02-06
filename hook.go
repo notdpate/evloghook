@@ -18,14 +18,6 @@ type EventLogHook struct {
 
 // NewEventLogHook creates a hook to be added to an instance of logger
 func NewEventLogHook(name string) (*EventLogHook, error) {
-	err := eventlog.InstallAsEventCreate(name, levels)
-	defer func() {
-		eventlog.Remove(name)
-	}()
-	if err != nil {
-		return nil, err
-	}
-
 	l, err := eventlog.Open(name)
 	if err != nil {
 		return nil, err
@@ -53,9 +45,9 @@ func (h *EventLogHook) Fire(entry *logrus.Entry) error {
 
 	switch entry.Level {
 	case logrus.PanicLevel:
-		return logger.Error(eventID, message)
+		return logger.Error(eventID+2, message)
 	case logrus.FatalLevel:
-		return logger.Error(eventID, message)
+		return logger.Error(eventID+1, message)
 	case logrus.ErrorLevel:
 		return logger.Error(eventID, message)
 	case logrus.WarnLevel:
@@ -63,7 +55,7 @@ func (h *EventLogHook) Fire(entry *logrus.Entry) error {
 	case logrus.InfoLevel:
 		return logger.Info(eventID, message)
 	case logrus.DebugLevel:
-		return logger.Info(eventID, message)
+		return logger.Info(eventID+1, message)
 	default:
 		return nil
 	}
