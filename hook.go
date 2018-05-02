@@ -6,7 +6,7 @@ package evloghook
 import (
 	"golang.org/x/sys/windows/svc/eventlog"
 
-	"github.com/Sirupsen/logrus"
+	"github.com/sirupsen/logrus"
 )
 
 const levels = eventlog.Error | eventlog.Warning | eventlog.Info
